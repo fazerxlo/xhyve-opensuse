@@ -1,7 +1,7 @@
 # macOS openSUSE
 
 Install an openSUSE VM on macOS using [xhyve].
-Based on [https://github.com/rimusz-lab/xhyve-ubuntu]: https://github.com/rimusz-lab/xhyve-ubuntu
+Based on [https://github.com/rimusz-lab/xhyve-ubuntu]:https://github.com/rimusz-lab/xhyve-ubuntu
 
 ## Download openSUSE
 
@@ -30,7 +30,7 @@ After booting, install openSUSE just like you normally would.
 Pro tip: Don't resize your terminal while you're going through the installer.
 
 
-##TODO
+## TODO
 
 copy kernel to the host boot folder
 
@@ -69,7 +69,9 @@ jaime@xhyve:~$ sudo poweroff
 jaime@mac:~$ sudo ./start.sh
 ```
 
-##Links
+## Links
 
-[xhyve-ubuntu]: https://github.com/rimusz-lab/xhyve-ubuntu
-[xhyve]: https://github.com/machyve/xhyve
+[xhyve-ubuntu]:https://github.com/rimusz-lab/xhyve-ubuntu
+[xhyve]:https://github.com/machyve/xhyve
+[bhyve_uefi]:https://people.freebsd.org/%7Egrehan/bhyve_uefi/
+

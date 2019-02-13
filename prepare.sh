@@ -1,26 +1,35 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -o xtrace
+set -eo pipefail
 IFS=$'\n\t'
 
-if [ -z "$1" ]; then
-    echo "missing path to iso"
+if [ -f storage.img ]; then
+    echo "Storage already found exiting!"
     exit 1
 fi
 
-dd if=/dev/zero of=tmp.iso bs=$[2*1024] count=1
-dd if="$1" bs=$[2*1024] skip=1 >> tmp.iso
 
-diskinfo=$(hdiutil attach tmp.iso)
+if [ -z "$1" ]; then
+    echo "missing disk size on GB"
+    exit 1
+fi
 
-set +e
+SIZE=$[$1*1]
+MB=$[1024*1024]
+GB=$[1024*$MB]
 
-mnt=$(echo "$diskinfo" | perl -ne '/(\/Volumes.*)/ and print $1')
-cp "$mnt/boot/x86_64/loader/linux" boot-install
-cp "$mnt/boot/x86_64/loader/initrd" boot-install
-set -e
+echo "Creating diskimage"
 
-disk=$(echo "$diskinfo" |  cut -d' ' -f1)
-hdiutil eject "$disk"
+dd if=/dev/zero of=storage.img bs=$[1*$GB] count=$SIZE
 
-rm tmp.iso
+echo "Disk created: storage.img"
+
+ls -l storage.img
+
+if [ ! -f BHYVE_UEFI.fd ]; then
+    echo "BHYVE_UEFI.fd file not found!"
+    echo "Trying to download from: https://people.freebsd.org/%7Egrehan/bhyve_uefi/BHYVE_UEFI_20160526.fd"
+    wget -O BHYVE_UEFI.fd  https://people.freebsd.org/%7Egrehan/bhyve_uefi/BHYVE_UEFI_20160526.fd
+fi
+
